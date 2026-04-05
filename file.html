@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>❤️ Happy 4th Anniversary ❤️</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg,#ffe4ec,#ffc9de);
+    font-family: 'Poppins', sans-serif;
+    color: #444;
+    overflow: hidden;
+  }
+  .box {
+    background:white;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 0 20px rgba(0,0,0,0.15);
+    width:90%;
+    max-width:400px;
+    padding:25px;
+    transition:opacity .5s ease,transform .5s ease;
+  }
+  h1,h2{color:#e75480;}
+  button,.option {
+    display:block;
+    margin:10px auto;
+    padding:10px 20px;
+    background:#e75480;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+  }
+  #pin-section input {
+    font-size:18px;
+    text-align:center;
+    letter-spacing:4px;
+    padding:8px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    width:80px;
+  }
+  #message{margin-top:10px;color:#e75480;}
+  .fade-out{opacity:0;transform:translateY(-20px);}
+  .fade-in{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+<div class="box fade-in" id="content">
+  <h1>Happy Birthday<br>🎉 and 🎉<br>Happy 4th Anniversary</h1>
+  <p>I hope you love your gift. The bag won’t just hold your belongings — it’ll carry our memories and follow us into our future together.</p>
+  <h3>Now you love me huh? 🤭</h3>
+  <div id="love-buttons">
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">ㄟ( ▔, ▔ )ㄏ</button>
+  </div>
+</div>
+
+<script>
+const content=document.getElementById('content');
+
+function animateTransition(cb){
+  content.classList.add("fade-out");
+  setTimeout(()=>{
+    cb();
+    content.classList.remove("fade-out");
+    content.classList.add("fade-in");
+  },400);
+}
+
+// playful yes/no page
+const noBtn=document.getElementById('noBtn');
+const yesBtn=document.getElementById('yesBtn');
+
+noBtn.addEventListener('click',()=>moveNo());
+function moveNo(){
+  const x=Math.random()*200-100;
+  const y=Math.random()*200-100;
+  noBtn.style.transform=`translate(${x}px,${y}px)`;
+}
+
+yesBtn.addEventListener('click',()=>{
+  animateTransition(startSecondPage);
+});
+
+function startSecondPage(){
+  content.innerHTML=`
+  <img src="Avatar.jfif" style="width:60%; border-radius:15px; margin-bottom:15px;">
+    <h2>Shall we begin this puzzle for your next surprise? 🧩✨</h2>
+    <button onclick="startQuiz()">Let the adventure start!</button>
+  `;
+}
+
+function startQuiz(){
+  animateTransition(()=>loadQuiz());
+}
+
+// QUIZ SECTION
+function loadQuiz(){
+  content.innerHTML=`
+    <h1>༼ つ ◕_◕ ༽つ 4th Anniversary Quiz</h1>
+    <div id="quiz"></div>
+    <div id="pin-section" style="display:none;">
+      <h2>Enter the 4-digit PIN 💌</h2>
+      <input type="password" maxlength="4" id="pin-input" placeholder="----"><br><br>
+      <button onclick="checkPin()">Unlock</button>
+      <p id="message"></p>
+    </div>
+  `;
+  initQuiz();
+}
+
+const quizData=[
+  {
+    question:"When we first met in person?",
+    img: "Q1.jpg",
+    options:["2/14/2021","2/14/2022","03/02/2022","I don't know"],
+    correct:1,number:2
+  },
+  {
+    question:"Where did we travel together for the first time outside California?",
+    img: "Q2.png",
+    options:["Nevada","Florida","Utah","None of the above"],
+    correct:2,number:1
+  },
+  {
+    question:"The first thing I ever gave you as a gift?",
+    img: "Q3.jpg",
+    options:["Egg Custard","Baymax","Angry Cat","LOL Skin"],
+    correct:3,number:2
+  },
+  {
+    question:"Where did we take our first photo together?",
+    img: "Q4.jpg",
+    options:["Lantern festival","Fremont Shack of potato","Computer History Museum","Your home"],
+    correct:0,number:2
+  }
+];
+
+let current=0;
+let code=[];
+let quiz,pinSection;
+function initQuiz(){
+  quiz=document.getElementById('quiz');
+  pinSection=document.getElementById('pin-section');
+  showQuestion();
+}
+
+function showQuestion(){
+  const q=quizData[current];
+  quiz.innerHTML=`
+    <img src="${q.img}" style="width:50%; border-radius:15px; margin-bottom:15px;">
+    <h2>${q.question}</h2>
+    ${q.options.map((opt,i)=>`<button class="option" onclick="checkAnswer(${i})">${opt}</button>`).join('')}
+  `;
+}
+
+function checkAnswer(i){
+  const q=quizData[current];
+  if(i===q.correct){
+    alert("Correct! Your number is "+q.number);
+    code.push(q.number);
+    current++;
+    if(current<quizData.length){
+      animateTransition(showQuestion);
+    }else{
+      animateTransition(()=>{
+        quiz.style.display="none";
+        pinSection.style.display="block";
+      });
+    }
+  }else{
+    alert("😤 Huh!? 😤");
+  }
+}
+
+function checkPin(){
+  const input=document.getElementById('pin-input').value;
+  const msg=document.getElementById('message');
+  if(input===code.join('')){
+    msg.textContent="🎉 Correct PIN! Opening surprise... 🎉";
+    setTimeout(()=>{window.location.href="https://www.tiktok.com/@ddv0888/video/7624745908177014047?_d=secCgYIASAHKAESPgo8U0ITnWzxu%2BWPxEw7UyOBekX%2Bnpl20cbAGSr9qdwOnb%2BEDyAX6eHbMYi87pLj7TwSwDOrN%2B26CK60xKYgGgA%3D&_r=1&_svg=3&checksum=6a0aa9cb4f6eb0674ebcbd8e47946684e7baa5425c099f5589b785c2f30a4f3c&item_author_type=1&link_reflow_popup_iteration_sharer=%7B%22dynamic_cover%22%3A1%2C%22follow_to_play_duration%22%3A-1%2C%22profile_clickable%22%3A1%2C%22click_empty_to_play%22%3A1%7D&preview_pb=0&reflow_page_type=1&reflow_sign_scene=1&rgssign=2.1.CwAl4q_uwda3_JKcOJWolw&sec_user_id=MS4wLjABAAAAV9VJlmu469LOQ653Cxu_4mT1KfwaSi-659LPETRCFkVVa0jXZWy4ZfMqT5JpOCw7&share_app_id=1233&share_item_id=7624745908177014047&share_link_id=FCDAC058-8643-47BB-B6BB-2BA483D800C8&share_region=US&share_scene=2&sharer_language=en&social_share_type=0&source=h5_m&timestamp=1775341909&tt_from=copy&u_code=el2il2k8i6g7bm&ug_btm=b8727%2Cb2878&user_id=7519405527127032846&utm_campaign=client_share&utm_medium=ios&utm_source=copy";},1200);
+  }else{
+    msg.textContent="❌ Incorrect. Try again!";
+  }
+}
+</script>
+</body>
+</html>
