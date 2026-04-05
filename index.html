@@ -160,6 +160,14 @@ function showQuestion(){
     ${q.options.map((opt,i)=>`<button class="option" onclick="checkAnswer(${i})">${opt}</button>`).join('')}
   `;
 }
+function showMessage(text) {
+  const popup = document.getElementById("popup");
+  popup.textContent = text;
+  popup.style.display = "block";
+  setTimeout(() => {
+    popup.style.display = "none";
+  }, 1500);
+}
 
 function checkAnswer(i){
   const q=quizData[current];
@@ -176,7 +184,7 @@ function checkAnswer(i){
       });
     }
   }else{
-    alert("😤 Huh!? 😤");
+    showMessage("😤 Huh!? 😤");
   }
 }
 
@@ -191,5 +199,23 @@ function checkPin(){
   }
 }
 </script>
+
+<div id="popup" style="
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  font-size: 18px;
+  color: #e75480;
+  display: none;
+  z-index: 9999;
+  text-align:center;
+">
+</div>
+
 </body>
 </html>
