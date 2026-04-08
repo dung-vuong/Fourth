@@ -52,6 +52,9 @@
 </style>
 </head>
 <body>
+<audio id="wrong-sound" src="huh-cat.mp3" preload="auto"></audio>
+<audio id="celebrate-sound" src="correct.mp3" preload="auto"></audio>
+<audio id="bg-music" src="mario.mp3" preload="auto" loop></audio>
 <div class="box fade-in" id="content">
   <h1>Happy Birthday<br>🎉 and 🎉<br>Happy 4th Anniversary</h1>
   <p>I hope you love your gift. The bag won’t just hold your belongings — it’ll carry our memories and follow us into our future together.</p>
@@ -86,8 +89,22 @@ function moveNo(){
 }
 
 yesBtn.addEventListener('click',()=>{
+  const bg = document.getElementById("bg-music");
+  const sound = document.getElementById("celebrate-sound");
+
+  // Start the Kahoot-style background music
+  bg.volume = 0.25;
+  bg.play();
+
+  // Play the short celebration sound once
+  sound.currentTime = 0;
+  sound.volume = 0.4;
+  sound.play();
+
   animateTransition(startSecondPage);
 });
+
+
 
 function startSecondPage(){
   content.innerHTML=`
@@ -98,8 +115,13 @@ function startSecondPage(){
 }
 
 function startQuiz(){
+  const sound = document.getElementById("celebrate-sound");
+  sound.currentTime = 0;
+  sound.volume = 0.4;
+  sound.play();
   animateTransition(()=>loadQuiz());
 }
+
 
 // QUIZ SECTION
 function loadQuiz(){
@@ -170,34 +192,76 @@ function showMessage(text) {
 }
 
 function checkAnswer(i){
-  const q=quizData[current];
-  if(i===q.correct){
-    alert("Correct! Your number is "+q.number);
+  const q = quizData[current];
+  const bg = document.getElementById("bg-music");
+  const sound = document.getElementById("celebrate-sound");
+  const wrong = document.getElementById("wrong-sound");
+
+  if(i === q.correct){
+    // ✅ correct: play celebration sound
+    sound.currentTime = 0;
+    sound.volume = 0.4;
+    sound.play();
+
+    showMessage("✅ Correct! Your number is " + q.number);
     code.push(q.number);
     current++;
-    if(current<quizData.length){
+
+    if(current < quizData.length){
       animateTransition(showQuestion);
-    }else{
+    } else {
       animateTransition(()=>{
-        quiz.style.display="none";
-        pinSection.style.display="block";
+        quiz.style.display = "none";
+        pinSection.style.display = "block";
       });
     }
-  }else{
+
+  } else {
+    // ❌ wrong: play huh? sound from 0.4s → 2s
+    wrong.pause();                 // reset if playing
+    wrong.currentTime = 1;       // start at half‑second mark
+    wrong.volume = 0.4;
+    wrong.play();
+
+    setTimeout(()=>{
+      wrong.pause();
+      wrong.currentTime = 0;       // reset for next time
+    }, 1000); // plays for 1.5 seconds (0.4s–2s)
+
     showMessage("😤 Huh!? 😤");
   }
 }
 
+
 function checkPin(){
-  const input=document.getElementById('pin-input').value;
-  const msg=document.getElementById('message');
-  if(input===code.join('')){
-    msg.textContent="🎉 Correct PIN! Opening surprise... 🎉";
-    setTimeout(()=>{window.location.href="https://www.tiktok.com/@ddv0888/video/7624745908177014047?_d=secCgYIASAHKAESPgo8U0ITnWzxu%2BWPxEw7UyOBekX%2Bnpl20cbAGSr9qdwOnb%2BEDyAX6eHbMYi87pLj7TwSwDOrN%2B26CK60xKYgGgA%3D&_r=1&_svg=3&checksum=6a0aa9cb4f6eb0674ebcbd8e47946684e7baa5425c099f5589b785c2f30a4f3c&item_author_type=1&link_reflow_popup_iteration_sharer=%7B%22dynamic_cover%22%3A1%2C%22follow_to_play_duration%22%3A-1%2C%22profile_clickable%22%3A1%2C%22click_empty_to_play%22%3A1%7D&preview_pb=0&reflow_page_type=1&reflow_sign_scene=1&rgssign=2.1.CwAl4q_uwda3_JKcOJWolw&sec_user_id=MS4wLjABAAAAV9VJlmu469LOQ653Cxu_4mT1KfwaSi-659LPETRCFkVVa0jXZWy4ZfMqT5JpOCw7&share_app_id=1233&share_item_id=7624745908177014047&share_link_id=FCDAC058-8643-47BB-B6BB-2BA483D800C8&share_region=US&share_scene=2&sharer_language=en&social_share_type=0&source=h5_m&timestamp=1775341909&tt_from=copy&u_code=el2il2k8i6g7bm&ug_btm=b8727%2Cb2878&user_id=7519405527127032846&utm_campaign=client_share&utm_medium=ios&utm_source=copy";},1200);
-  }else{
-    msg.textContent="❌ Incorrect. Try again!";
+  const input = document.getElementById('pin-input').value;
+  const msg = document.getElementById('message');
+  const bg = document.getElementById('bg-music');
+  const sound = document.getElementById('celebrate-sound');
+
+  if(input === code.join('')){
+    // Stop background music smoothly
+    if (bg) {
+      bg.pause();
+      bg.currentTime = 0;
+    }
+
+    // Play the same celebration sound
+    sound.currentTime = 0;
+    sound.volume = 0.4;
+    sound.play();
+
+    // Show success and redirect after short delay
+    msg.textContent = "🎉 Correct PIN! Opening surprise... 🎉";
+    setTimeout(()=>{
+      window.location.href = "[tiktok.com](https://www.tiktok.com/@ddv0888/video/7624745908177014047)";
+    },1500);
+  } else {
+    msg.textContent = "❌ Incorrect. Try again!";
   }
 }
+
+
 </script>
 
 <div id="popup" style="
