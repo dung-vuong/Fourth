@@ -192,7 +192,6 @@ function showMessage(text) {
     popup.style.display = "none";
   }, 1500);
 }
-
 function checkAnswer(i){
   const q = quizData[current];
   const bg = document.getElementById("bg-music");
@@ -200,39 +199,49 @@ function checkAnswer(i){
   const wrong = document.getElementById("wrong-sound");
 
   if(i === q.correct){
-    // ✅ correct: play celebration sound
+    // correct answer sound
     sound.currentTime = 0;
     sound.volume = 0.05;
     sound.play();
 
-    showMessage("✅ Correct! Your number is " + q.number);
-    code.push(q.number);
-    current++;
+    // show custom popup instead of alert
+    const popup = document.getElementById("correct-popup");
+    const text = document.getElementById("correct-text");
+    const okBtn = document.getElementById("ok-btn");
 
-    if(current < quizData.length){
-      animateTransition(showQuestion);
-    } else {
-      animateTransition(()=>{
-        quiz.style.display = "none";
-        pinSection.style.display = "block";
-      });
-    }
+    text.textContent = "✅ Correct! Your number is " + q.number + ".";
+    popup.style.display = "block";
+
+    okBtn.onclick = () => {
+      popup.style.display = "none";
+      code.push(q.number);
+      current++;
+
+      if(current < quizData.length){
+        animateTransition(showQuestion);
+      } else {
+        animateTransition(()=>{
+          quiz.style.display = "none";
+          pinSection.style.display = "block";
+        });
+      }
+    };
 
   } else {
-    // ❌ wrong: play huh? sound from 0.1s → 2s
-    wrong.pause();                 // reset if playing
-    wrong.currentTime = 1;       // start at half‑second mark
-    wrong.volume = 0.05;
+    // wrong answer sound (0.5s–2s)
+    wrong.pause();
+    wrong.currentTime = 1;
+    wrong.volume = 0.08;
     wrong.play();
-
     setTimeout(()=>{
       wrong.pause();
-      wrong.currentTime = 0;       // reset for next time
-    }, 1000); // plays for 1.5 seconds (0.1s–2s)
+      wrong.currentTime = 0;
+    },1000);
 
     showMessage("😤 Huh!? 😤");
   }
 }
+
 
 
 function checkPin(){
@@ -256,7 +265,7 @@ function checkPin(){
     // Show success and redirect after short delay
     msg.textContent = "🎉 Correct PIN! Opening surprise... 🎉";
     setTimeout(()=>{
-      window.location.href = "[tiktok.com](https://www.tiktok.com/@ddv0888/video/7624745908177014047)";
+      window.location.href = "https://www.tiktok.com/@ddv0888/video/7624745908177014047?_r=1&_t=ZP-95MFZK6Tt4J";
     },1500);
   } else {
     msg.textContent = "❌ Incorrect. Try again!";
@@ -281,6 +290,27 @@ function checkPin(){
   z-index: 9999;
   text-align:center;
 ">
+</div>
+
+<div id="correct-popup" style="
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  font-size: 18px;
+  color: #e75480;
+  text-align: center;
+  display: none;
+  z-index: 10000;
+">
+  <p id="correct-text"></p>
+  <button id="ok-btn" style="margin-top: 10px; padding: 6px 16px;
+    background: #e75480; color: white; border: none;
+    border-radius: 8px; font-size: 16px;">OK</button>
 </div>
 
 </body>
