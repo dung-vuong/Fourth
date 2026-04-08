@@ -257,20 +257,34 @@ function checkPin(){
       bg.currentTime = 0;
     }
 
-    // Play the same celebration sound
+    // Play the celebration sound quietly
     sound.currentTime = 0;
     sound.volume = 0.05;
     sound.play();
 
-    // Show success and redirect after short delay
-    msg.textContent = "🎉 Correct PIN! Opening surprise... 🎉";
-    setTimeout(()=>{
-      window.location.href = "https://www.tiktok.com/@ddv0888/video/7624745908177014047?_r=1&_t=ZP-95MFZK6Tt4J";
-    },1500);
+    // Begin countdown
+    let countdown = 3;
+    msg.style.fontSize = "20px";
+    msg.textContent = `🎉 Correct PIN! Redirecting in ${countdown}...`;
+
+    const timer = setInterval(() => {
+      countdown--;
+      if (countdown > 0) {
+        msg.textContent = `🎉 Correct PIN! Redirecting in ${countdown}...`;
+      } else {
+        clearInterval(timer);
+        msg.textContent = "✨ Opening ✨";
+        setTimeout(()=>{
+          window.location.href = "https://www.tiktok.com/@ddv0888/video/7624745908177014047?_r=1&_t=ZP-95MFZK6Tt4J";
+        }, 800);
+      }
+    }, 1000);
+
   } else {
     msg.textContent = "❌ Incorrect. Try again!";
   }
 }
+
 
 
 </script>
