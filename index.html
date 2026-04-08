@@ -93,12 +93,12 @@ yesBtn.addEventListener('click',()=>{
   const sound = document.getElementById("celebrate-sound");
 
   // Start the Kahoot-style background music
-  bg.volume = 0.25;
+  bg.volume = 0.1;
   bg.play();
 
   // Play the short celebration sound once
   sound.currentTime = 0;
-  sound.volume = 0.4;
+  sound.volume = 0.2;
   sound.play();
 
   animateTransition(startSecondPage);
@@ -117,7 +117,7 @@ function startSecondPage(){
 function startQuiz(){
   const sound = document.getElementById("celebrate-sound");
   sound.currentTime = 0;
-  sound.volume = 0.4;
+  sound.volume = 0.2;
   sound.play();
   animateTransition(()=>loadQuiz());
 }
@@ -200,7 +200,7 @@ function checkAnswer(i){
   if(i === q.correct){
     // ✅ correct: play celebration sound
     sound.currentTime = 0;
-    sound.volume = 0.4;
+    sound.volume = 0.2;
     sound.play();
 
     showMessage("✅ Correct! Your number is " + q.number);
@@ -217,16 +217,16 @@ function checkAnswer(i){
     }
 
   } else {
-    // ❌ wrong: play huh? sound from 0.4s → 2s
+    // ❌ wrong: play huh? sound from 0.2s → 2s
     wrong.pause();                 // reset if playing
     wrong.currentTime = 1;       // start at half‑second mark
-    wrong.volume = 0.4;
+    wrong.volume = 0.2;
     wrong.play();
 
     setTimeout(()=>{
       wrong.pause();
       wrong.currentTime = 0;       // reset for next time
-    }, 1000); // plays for 1.5 seconds (0.4s–2s)
+    }, 1000); // plays for 1.5 seconds (0.2s–2s)
 
     showMessage("😤 Huh!? 😤");
   }
@@ -248,7 +248,7 @@ function checkPin(){
 
     // Play the same celebration sound
     sound.currentTime = 0;
-    sound.volume = 0.4;
+    sound.volume = 0.2;
     sound.play();
 
     // Show success and redirect after short delay
