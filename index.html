@@ -93,31 +93,33 @@ yesBtn.addEventListener('click',()=>{
   const sound = document.getElementById("celebrate-sound");
 
   // Start the Kahoot-style background music
-  bg.volume = 0.05;
+  bg.volume = 0.02;
   bg.play();
 
   // Play the short celebration sound once
   sound.currentTime = 0;
-  sound.volume = 0.1;
+  sound.volume = 0.05;
   sound.play();
 
   animateTransition(startSecondPage);
 });
 
-
-
 function startSecondPage(){
-  content.innerHTML=`
-  <img src="Avatar.jfif" style="width:60%; border-radius:15px; margin-bottom:15px;">
-    <h2>Shall we begin this puzzle for your next surprise? 🧩✨</h2>
+  content.innerHTML = `
+    <img src="Avatar.jfif" style="width:60%; border-radius:15px; margin-bottom:15px;">
+    <h2>✨ Shall we begin this puzzle for your next surprise? 🧩</h2>
     <button onclick="startQuiz()">Let the adventure start!</button>
+    <p style="font-size:14px; color:#e75480; margin-top:8px; font-style:italic;">
+      🔊 Please turn on your volume for the best experience 🔊
+    </p>
   `;
 }
+
 
 function startQuiz(){
   const sound = document.getElementById("celebrate-sound");
   sound.currentTime = 0;
-  sound.volume = 0.1;
+  sound.volume = 0.05;
   sound.play();
   animateTransition(()=>loadQuiz());
 }
@@ -200,7 +202,7 @@ function checkAnswer(i){
   if(i === q.correct){
     // ✅ correct: play celebration sound
     sound.currentTime = 0;
-    sound.volume = 0.1;
+    sound.volume = 0.05;
     sound.play();
 
     showMessage("✅ Correct! Your number is " + q.number);
@@ -220,7 +222,7 @@ function checkAnswer(i){
     // ❌ wrong: play huh? sound from 0.1s → 2s
     wrong.pause();                 // reset if playing
     wrong.currentTime = 1;       // start at half‑second mark
-    wrong.volume = 0.1;
+    wrong.volume = 0.05;
     wrong.play();
 
     setTimeout(()=>{
@@ -248,7 +250,7 @@ function checkPin(){
 
     // Play the same celebration sound
     sound.currentTime = 0;
-    sound.volume = 0.1;
+    sound.volume = 0.05;
     sound.play();
 
     // Show success and redirect after short delay
